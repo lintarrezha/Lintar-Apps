@@ -51,6 +51,7 @@ export const apps: AppItem[] = [
     category: 'Web',
     icon: 'server',
     accent: '#5E5CE6',
+    favorite: true,
   },
   {
     id: 'personal-vault',
@@ -62,6 +63,19 @@ export const apps: AppItem[] = [
     category: 'Web',
     icon: 'folder',
     accent: '#FF453A',
+    favorite: false,
+  },
+  {
+    id: 'homie-space',
+    name: 'Homie Space',
+    shortName: 'Homie Space',
+    description: 'Ruang untuk berbagi ide dan kolaborasi.',
+    url: 'https://homie-space.vercel.app/',
+    platform: 'Vercel',
+    category: 'Web',
+    icon: 'globe',
+    accent: '#FF453A',
+    favorite: false,
   },
   {
     id: 'birthday-gift',
@@ -73,7 +87,7 @@ export const apps: AppItem[] = [
     category: 'Web',
     icon: 'cake',
     accent: '#FF4F93',
-    favorite: true,
+    favorite: false,
   },
   {
     id: 'qr-code-generator',
@@ -85,6 +99,7 @@ export const apps: AppItem[] = [
     category: 'Web',
     icon: 'link',
     accent: '#32ADE6',
+    favorite: false,
   },
   // {
   //   id: 'ikm-dashboard',
