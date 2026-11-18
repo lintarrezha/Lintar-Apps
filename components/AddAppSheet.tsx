@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import AppGlyph from '@/components/AppGlyph';
+import AppIcon from '@/components/AppIcon';
 import type { AppCategory, AppIconName, AppItem } from '@/data/apps';
 
 type Props = {
@@ -40,9 +41,13 @@ const iconOptions: { value: AppIconName; label: string }[] = [
   { value: 'folder', label: 'Folder' },
   { value: 'link', label: 'Link' },
   { value: 'terminal', label: 'Terminal' },
+  { value: 'home', label: 'Home' },
+  { value: 'lock', label: 'Lock' },
+  { value: 'qr', label: 'QR code' },
+  { value: 'chat', label: 'Chat' },
 ];
 
-const accentOptions = ['#0A84FF', '#5E5CE6', '#BF5AF2', '#FF4F93', '#FF453A', '#FF9F0A', '#30B477', '#32ADE6'];
+const accentOptions = ['#007AFF', '#5856D6', '#AF52DE', '#FF2D55', '#FF3B30', '#FF9500', '#34C759', '#32ADE6', '#48484A'];
 
 const initialState: FormState = {
   name: '',
@@ -50,7 +55,7 @@ const initialState: FormState = {
   platform: 'Vercel',
   category: 'Web',
   icon: 'dashboard',
-  accent: '#0A84FF',
+  accent: '#007AFF',
   iconUrl: '',
   favorite: false,
 };
@@ -238,7 +243,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
 
   return (
     <div className="sheet-layer" role="presentation">
-      <button className="sheet-backdrop" type="button" aria-label="Tutup form" onClick={onClose} />
+      <button className="sheet-backdrop" type="button" aria-label="Close" onClick={onClose} />
 
       <section className="add-app-sheet" role="dialog" aria-modal="true" aria-labelledby="add-app-title">
         <div className="sheet-grabber" aria-hidden="true" />
@@ -254,12 +259,10 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
         </div>
 
         <form id="add-app-form" className="add-app-form" onSubmit={handleSubmit}>
-          <div className="new-app-preview" aria-label="Preview icon aplikasi">
-            <span className={`new-app-preview-icon ${hasCustomIcon ? 'has-custom-image' : ''}`} style={{ backgroundColor: hasCustomIcon ? '#ffffff' : form.accent }}>
-              {form.iconUrl ? <img className="app-icon-image" src={form.iconUrl} alt="" /> : <AppGlyph name={form.icon} />}
-            </span>
+          <div className="new-app-preview" aria-label="Icon preview">
+            <AppIcon icon={form.icon} accent={form.accent} iconUrl={form.iconUrl || undefined} className="app-icon-preview" />
             <div>
-              <strong>{form.name.trim() || 'New Application'}</strong>
+              <strong>{form.name.trim() || 'New app'}</strong>
               <span>{form.platform.trim() || 'Web App'}</span>
             </div>
           </div>
@@ -274,7 +277,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
                   setForm((current) => ({ ...current, name: event.target.value }));
                   setError('');
                 }}
-                placeholder="My Application"
+                placeholder="App name"
                 maxLength={40}
               />
             </label>
@@ -348,7 +351,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
                   )}
                 </span>
                 <span className="custom-icon-copy">
-                  <strong>{hasCustomIcon ? 'Custom icon selected' : 'Custom App Icon'}</strong>
+                  <strong>{hasCustomIcon ? 'Custom icon' : 'Upload an icon'}</strong>
                   <small>{isProcessingIcon ? 'Processing image…' : 'PNG, JPG, WEBP or SVG'}</small>
                 </span>
                 <span className="custom-icon-action">{hasCustomIcon ? 'Change' : 'Choose'}</span>
@@ -421,7 +424,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
             <label className="settings-row settings-row-toggle">
               <span>
                 <strong>Favorite</strong>
-                <small>Show in Quick access</small>
+                <small>Show at the top of the page</small>
               </span>
               <input type="checkbox" checked={form.favorite} onChange={(event) => setForm((current) => ({ ...current, favorite: event.target.checked }))} />
               <span className="ios-switch" aria-hidden="true" />

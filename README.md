@@ -30,4 +30,9 @@ Edit `data/apps.ts`. Untuk sementara URL contoh masih menggunakan `#` agar aman.
 4. Upload icon/logo aplikasi
 5. Authentication admin
 6. Custom categories dan sorting
-7. Dark mode / appearance
+7. ~~Dark mode~~ (otomatis mengikuti sistem)
+
+## Tips
+
+- Tekan `/` untuk fokus ke pencarian, `Enter` untuk membuka hasil pertama, `Esc` untuk menghapus pencarian.
+- Ikon aplikasi bisa diganti lewat field `icon` dan `accent` di `data/apps.ts`. Glyph yang tersedia ada di `components/AppGlyph.tsx`.

@@ -1,53 +1,65 @@
 'use client';
 
-import type { CSSProperties } from 'react';
-import AppGlyph from '@/components/AppGlyph';
-import { StarIcon } from '@/components/Icons';
+import type { MouseEvent } from 'react';
+import AppIcon from '@/components/AppIcon';
+import { ChevronIcon, StarIcon } from '@/components/Icons';
 import type { AppItem } from '@/data/apps';
 
 type Props = {
   app: AppItem;
+  variant: 'pinned' | 'row';
   isFavorite: boolean;
   onToggleFavorite: (id: string) => void;
 };
 
-type AppTileStyle = CSSProperties & {
-  '--app-accent': string;
-};
-
-export default function AppTile({ app, isFavorite, onToggleFavorite }: Props) {
+function linkProps(app: AppItem) {
   const disabled = app.url === '#';
-  const hasCustomIcon = Boolean(app.iconUrl);
-  const tileStyle: AppTileStyle = {
-    '--app-accent': app.accent,
+
+  return {
+    href: app.url,
+    target: disabled ? undefined : '_blank',
+    rel: disabled ? undefined : 'noreferrer',
+    'aria-disabled': disabled || undefined,
+    onClick: (event: MouseEvent) => {
+      if (disabled) event.preventDefault();
+    },
   };
+}
+
+export default function AppTile({ app, variant, isFavorite, onToggleFavorite }: Props) {
+  if (variant === 'pinned') {
+    return (
+      <li className="pin">
+        <a className="pin-link" {...linkProps(app)} title={app.name}>
+          <AppIcon icon={app.icon} accent={app.accent} iconUrl={app.iconUrl} />
+          <span className="pin-name">{app.shortName}</span>
+        </a>
+      </li>
+    );
+  }
 
   return (
-    <article className="app-tile" style={tileStyle}>
-      <a
-        href={app.url}
-        target={disabled ? undefined : '_blank'}
-        rel={disabled ? undefined : 'noreferrer'}
-        className={`app-launch ${disabled ? 'is-disabled' : ''}`}
-        onClick={(event) => {
-          if (disabled) event.preventDefault();
-        }}
-        aria-label={`Buka ${app.name}`}
-        aria-disabled={disabled}
-      >
-        <span className={`app-icon-shell ${hasCustomIcon ? 'has-custom-image' : ''}`} style={{ backgroundColor: hasCustomIcon ? '#ffffff' : app.accent }} aria-hidden="true">
-          {app.iconUrl ? <img className="app-icon-image" src={app.iconUrl} alt="" /> : <AppGlyph name={app.icon} />}
+    <li className="app-row">
+      <a className="app-row-link" {...linkProps(app)}>
+        <AppIcon icon={app.icon} accent={app.accent} iconUrl={app.iconUrl} />
+        <span className="app-row-text">
+          <span className="app-row-name">{app.name}</span>
+          <span className="app-row-desc">{app.description || app.category}</span>
         </span>
-
-        <span className="app-name" title={app.name}>
-          {app.shortName}
-        </span>
-        <span className="app-platform">{app.platform}</span>
+        <span className="app-row-platform">{app.platform}</span>
       </a>
 
-      <button type="button" className={`tile-favorite ${isFavorite ? 'is-favorite' : ''}`} aria-label={isFavorite ? `Hapus ${app.name} dari favorit` : `Tambahkan ${app.name} ke favorit`} onClick={() => onToggleFavorite(app.id)}>
+      <button
+        type="button"
+        className={`row-star ${isFavorite ? 'is-favorite' : ''}`}
+        aria-pressed={isFavorite}
+        aria-label={isFavorite ? `Remove ${app.name} from favorites` : `Add ${app.name} to favorites`}
+        onClick={() => onToggleFavorite(app.id)}
+      >
         <StarIcon filled={isFavorite} />
       </button>
-    </article>
+
+      <ChevronIcon className="row-chevron" />
+    </li>
   );
 }

@@ -1,6 +1,6 @@
 export type AppCategory = 'Productivity' | 'Data' | 'Web' | 'Tools';
 
-export type AppIconName = 'dashboard' | 'document' | 'receipt' | 'chart' | 'bag' | 'camera' | 'cake' | 'drop' | 'server' | 'globe' | 'code' | 'database' | 'calendar' | 'folder' | 'link' | 'terminal';
+export type AppIconName = 'dashboard' | 'document' | 'receipt' | 'chart' | 'bag' | 'camera' | 'cake' | 'drop' | 'server' | 'globe' | 'code' | 'database' | 'calendar' | 'folder' | 'link' | 'terminal' | 'home' | 'lock' | 'qr' | 'chat';
 
 export type AppItem = {
   id: string;
@@ -19,14 +19,14 @@ export type AppItem = {
 export const apps: AppItem[] = [
   {
     id: 'invoice-system',
-    name: 'Invoice System (Apps Script)',
+    name: 'Invoice System',
     shortName: 'Invoice',
     description: 'Kelola transaksi, invoice, dan rekap harian.',
     url: 'https://script.google.com/macros/s/AKfycbySgTIbRf70w2a-C1aatFOBYH9wUICX0Rtqt7SjRD2BWn7-ofLc8N0M6uHpWSylAjJa/exec',
     platform: 'Apps Script',
     category: 'Productivity',
     icon: 'receipt',
-    accent: '#0A84FF',
+    accent: '#007AFF',
     favorite: true,
   },
   {
@@ -38,7 +38,7 @@ export const apps: AppItem[] = [
     platform: 'Vercel',
     category: 'Data',
     icon: 'chart',
-    accent: '#30B477',
+    accent: '#34C759',
     favorite: true,
   },
   {
@@ -49,8 +49,8 @@ export const apps: AppItem[] = [
     url: 'https://lintarrezha.vercel.app',
     platform: 'Vercel',
     category: 'Web',
-    icon: 'server',
-    accent: '#5E5CE6',
+    icon: 'globe',
+    accent: '#5856D6',
     favorite: true,
   },
   {
@@ -61,8 +61,8 @@ export const apps: AppItem[] = [
     url: 'https://lintar-digiva.vercel.app/',
     platform: 'Vercel',
     category: 'Web',
-    icon: 'folder',
-    accent: '#FF453A',
+    icon: 'lock',
+    accent: '#48484A',
     favorite: false,
   },
   {
@@ -73,8 +73,8 @@ export const apps: AppItem[] = [
     url: 'https://homie-space.vercel.app/',
     platform: 'Vercel',
     category: 'Web',
-    icon: 'globe',
-    accent: '#FF453A',
+    icon: 'home',
+    accent: '#FF9500',
     favorite: false,
   },
   {
@@ -86,7 +86,7 @@ export const apps: AppItem[] = [
     platform: 'Vercel',
     category: 'Web',
     icon: 'cake',
-    accent: '#FF4F93',
+    accent: '#FF2D55',
     favorite: false,
   },
   {
@@ -97,7 +97,7 @@ export const apps: AppItem[] = [
     url: 'https://lintar-qr-generator.vercel.app/',
     platform: 'Web App',
     category: 'Web',
-    icon: 'link',
+    icon: 'qr',
     accent: '#32ADE6',
     favorite: false,
   },
@@ -110,7 +110,7 @@ export const apps: AppItem[] = [
   //   platform: 'Dashboard',
   //   category: 'Data',
   //   icon: 'dashboard',
-  //   accent: '#FF9F0A',
+  //   accent: '#FF9500',
   // },
   // {
   //   id: 'server-checklist',
@@ -121,6 +121,6 @@ export const apps: AppItem[] = [
   //   platform: 'Google',
   //   category: 'Productivity',
   //   icon: 'server',
-  //   accent: '#5E5CE6',
+  //   accent: '#5856D6',
   // },
 ];

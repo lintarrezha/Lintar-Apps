@@ -8,7 +8,7 @@ type Props = SVGProps<SVGSVGElement> & {
 const common = {
   fill: 'none',
   stroke: 'currentColor',
-  strokeWidth: 1.75,
+  strokeWidth: 1.8,
   strokeLinecap: 'round' as const,
   strokeLinejoin: 'round' as const,
 };
@@ -114,6 +114,34 @@ const icons: Record<AppIconName, ReactNode> = {
     <>
       <path d="M10.25 13.75a3.5 3.5 0 0 0 4.95 0l2.25-2.25a3.5 3.5 0 0 0-4.95-4.95l-1.3 1.3" />
       <path d="M13.75 10.25a3.5 3.5 0 0 0-4.95 0L6.55 12.5a3.5 3.5 0 1 0 4.95 4.95l1.3-1.3" />
+    </>
+  ),
+  home: (
+    <>
+      <path d="M3.75 11.25 12 4l8.25 7.25" />
+      <path d="M6 9.75v9.75h12V9.75" />
+      <path d="M10 19.5v-5h4v5" />
+    </>
+  ),
+  lock: (
+    <>
+      <rect x="5.5" y="10.5" width="13" height="9.5" rx="2.5" />
+      <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" />
+      <path d="M12 14.25v2" />
+    </>
+  ),
+  qr: (
+    <>
+      <rect x="4" y="4" width="6" height="6" rx="1.3" />
+      <rect x="14" y="4" width="6" height="6" rx="1.3" />
+      <rect x="4" y="14" width="6" height="6" rx="1.3" />
+      <path d="M14 14h2.5v2.5H14zM19.5 14v.01M14 19.5h2.5M19.5 17v3" />
+    </>
+  ),
+  chat: (
+    <>
+      <path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v8.5a1.5 1.5 0 0 1-1.5 1.5h-7.2L8 20.5V17H5a1.5 1.5 0 0 1-1.5-1.5V7A1.5 1.5 0 0 1 5 5.5Z" />
+      <path d="M8.5 11h.01M12 11h.01M15.5 11h.01" />
     </>
   ),
   terminal: (

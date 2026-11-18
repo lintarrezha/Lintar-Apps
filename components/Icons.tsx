@@ -52,3 +52,20 @@ export function StarIcon({ filled = false, ...props }: IconProps & { filled?: bo
     </svg>
   );
 }
+
+export function ChevronIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" {...base} strokeWidth={2.4} {...props}>
+      <path d="m9 5.5 6.5 6.5L9 18.5" />
+    </svg>
+  );
+}
+
+export function ClearIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
+      <circle cx="12" cy="12" r="10" fill="currentColor" />
+      <path d="m8.75 8.75 6.5 6.5M15.25 8.75l-6.5 6.5" fill="none" strokeWidth="2" strokeLinecap="round" style={{ stroke: "var(--clear-mark)" }} />
+    </svg>
+  );
+}
