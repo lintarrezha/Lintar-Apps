@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
-import AppGlyph from '@/components/AppGlyph';
 import AppIcon from '@/components/AppIcon';
 import type { AppCategory, AppIconName, AppItem } from '@/data/apps';
 
@@ -370,7 +369,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
               <span>or choose a symbol</span>
             </div>
 
-            <div className="icon-picker" role="radiogroup" aria-label="Icon aplikasi">
+            <div className="icon-picker" role="radiogroup" aria-label="App icon">
               {iconOptions.map((option) => {
                 const selected = !hasCustomIcon && form.icon === option.value;
 
@@ -391,9 +390,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
                       }))
                     }
                   >
-                    <span>
-                      <AppGlyph name={option.value} />
-                    </span>
+                    <AppIcon icon={option.value} accent={form.accent} />
                   </button>
                 );
               })}
