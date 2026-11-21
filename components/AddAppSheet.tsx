@@ -2,18 +2,22 @@
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import AppIcon from '@/components/AppIcon';
-import type { AppCategory, AppIconName, AppItem } from '@/data/apps';
+import { appCategories, type AppCategory, type AppIconName, type AppItem } from '@/data/apps';
 
 type Props = {
   open: boolean;
+  editing?: AppItem | null;
   onClose: () => void;
-  onAdd: (app: AppItem) => void;
+  onSave: (app: AppItem) => void;
+  onDelete?: (id: string) => void;
 };
 
 type FormState = {
   name: string;
+  description: string;
   url: string;
   platform: string;
+  account: string;
   category: AppCategory;
   icon: AppIconName;
   accent: string;
@@ -21,7 +25,7 @@ type FormState = {
   favorite: boolean;
 };
 
-const categories: AppCategory[] = ['Productivity', 'Data', 'Web', 'Tools'];
+const categories = appCategories;
 
 const iconOptions: { value: AppIconName; label: string }[] = [
   { value: 'dashboard', label: 'Dashboard' },
@@ -44,14 +48,21 @@ const iconOptions: { value: AppIconName; label: string }[] = [
   { value: 'lock', label: 'Lock' },
   { value: 'qr', label: 'QR code' },
   { value: 'chat', label: 'Chat' },
+  { value: 'drive', label: 'Drive' },
+  { value: 'sheet', label: 'Sheet' },
+  { value: 'mail', label: 'Mail' },
+  { value: 'photo', label: 'Photo' },
+  { value: 'bookmark', label: 'Bookmark' },
 ];
 
 const accentOptions = ['#007AFF', '#5856D6', '#AF52DE', '#FF2D55', '#FF3B30', '#FF9500', '#34C759', '#32ADE6', '#48484A'];
 
 const initialState: FormState = {
   name: '',
+  description: '',
   url: '',
   platform: 'Vercel',
+  account: '',
   category: 'Web',
   icon: 'dashboard',
   accent: '#007AFF',
@@ -75,6 +86,24 @@ function isValidHttpUrl(value: string) {
     return url.protocol === 'http:' || url.protocol === 'https:';
   } catch {
     return false;
+  }
+}
+
+/**
+ * Kalau beberapa akun Google login di satu browser, tautan Drive membuka akun default.
+ * Untuk shortcut Drive dengan Account berupa email, tambahkan ?authuser=email agar membuka akun yang benar.
+ */
+function withAuthUser(url: string, category: AppCategory, account: string) {
+  if (category !== 'Drive' || !account.includes('@')) return url;
+
+  try {
+    const parsed = new URL(url);
+    const isGoogle = parsed.hostname === 'google.com' || parsed.hostname.endsWith('.google.com');
+    if (!isGoogle || parsed.searchParams.has('authuser')) return url;
+    parsed.searchParams.set('authuser', account);
+    return parsed.toString();
+  } catch {
+    return url;
   }
 }
 
@@ -150,8 +179,25 @@ async function prepareCustomIcon(file: File) {
   return resizeRasterIcon(file);
 }
 
-export default function AddAppSheet({ open, onClose, onAdd }: Props) {
+function toFormState(app: AppItem): FormState {
+  return {
+    name: app.name,
+    description: app.description,
+    url: app.url,
+    platform: app.platform,
+    account: app.account ?? '',
+    category: app.category,
+    icon: app.icon,
+    accent: app.accent,
+    iconUrl: app.iconUrl ?? '',
+    favorite: Boolean(app.favorite),
+  };
+}
+
+export default function AddAppSheet({ open, editing = null, onClose, onSave, onDelete }: Props) {
+  const isEditing = Boolean(editing);
   const [form, setForm] = useState<FormState>(initialState);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [error, setError] = useState('');
   const [isProcessingIcon, setIsProcessingIcon] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -178,11 +224,12 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
 
   useEffect(() => {
     if (open) {
-      setForm(initialState);
+      setForm(editing ? toFormState(editing) : initialState);
       setError('');
       setIsProcessingIcon(false);
+      setConfirmDelete(false);
     }
-  }, [open]);
+  }, [open, editing]);
 
   if (!open) return null;
 
@@ -221,13 +268,14 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
       return;
     }
 
-    onAdd({
-      id: createId(name),
+    onSave({
+      id: editing?.id ?? createId(name),
       name,
       shortName: name,
-      description: '',
-      url,
+      description: form.description.trim(),
+      url: withAuthUser(url, form.category, form.account.trim()),
       platform: form.platform.trim() || 'Web App',
+      account: form.account.trim() || undefined,
       category: form.category,
       icon: form.icon,
       accent: form.accent,
@@ -235,6 +283,28 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
       favorite: form.favorite,
     });
 
+    onClose();
+  }
+
+  // Memilih Drive menyiapkan nilai yang masuk akal, tanpa menimpa pilihan yang sudah diubah manual.
+  function selectCategory(category: AppCategory) {
+    setForm((current) => ({
+      ...current,
+      category,
+      platform: category === 'Drive' && (!current.platform.trim() || current.platform === 'Vercel') ? 'Google Drive' : current.platform,
+      icon: category === 'Drive' && current.icon === 'dashboard' ? 'drive' : current.icon,
+    }));
+  }
+
+  function handleDelete() {
+    if (!editing) return;
+
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      return;
+    }
+
+    onDelete?.(editing.id);
     onClose();
   }
 
@@ -251,9 +321,9 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
           <button type="button" className="sheet-text-button" onClick={onClose}>
             Cancel
           </button>
-          <h2 id="add-app-title">Add App</h2>
+          <h2 id="add-app-title">{isEditing ? 'Edit App' : 'Add App'}</h2>
           <button type="submit" form="add-app-form" className="sheet-text-button sheet-text-button-primary" disabled={!canSubmit}>
-            Add
+            {isEditing ? 'Save' : 'Add'}
           </button>
         </div>
 
@@ -270,7 +340,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
             <label className="settings-row settings-row-input">
               <span>Name</span>
               <input
-                autoFocus
+                autoFocus={!isEditing}
                 value={form.name}
                 onChange={(event) => {
                   setForm((current) => ({ ...current, name: event.target.value }));
@@ -278,6 +348,16 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
                 }}
                 placeholder="App name"
                 maxLength={40}
+              />
+            </label>
+
+            <label className="settings-row settings-row-input">
+              <span>Note</span>
+              <input
+                value={form.description}
+                onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))}
+                placeholder="Optional"
+                maxLength={90}
               />
             </label>
 
@@ -305,11 +385,32 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
                 <option value="Apps Script" />
                 <option value="Web App" />
                 <option value="Dashboard" />
-                <option value="Google" />
+                <option value="Google Drive" />
+                <option value="Google Sheets" />
                 <option value="Python" />
               </datalist>
             </label>
+
+            {form.category === 'Drive' && (
+              <label className="settings-row settings-row-input">
+                <span>Account</span>
+                <input
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  value={form.account}
+                  onChange={(event) => setForm((current) => ({ ...current, account: event.target.value }))}
+                  placeholder="Work, or you@gmail.com"
+                  maxLength={60}
+                />
+              </label>
+            )}
           </div>
+
+          {form.category === 'Drive' && (
+            <p className="form-hint">
+              Shortcuts are grouped by account. If the account is an email, <code>?authuser=</code> is added to the link so it opens in the right Google account.
+            </p>
+          )}
 
           {error && (
             <p className="form-error" role="alert">
@@ -327,7 +428,7 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
                   className={`category-option ${form.category === category ? 'is-selected' : ''}`}
                   role="radio"
                   aria-checked={form.category === category}
-                  onClick={() => setForm((current) => ({ ...current, category }))}
+                  onClick={() => selectCategory(category)}
                 >
                   {category}
                 </button>
@@ -427,6 +528,14 @@ export default function AddAppSheet({ open, onClose, onAdd }: Props) {
               <span className="ios-switch" aria-hidden="true" />
             </label>
           </div>
+
+          {isEditing && onDelete && (
+            <div className="settings-group form-section">
+              <button type="button" className="danger-button" onClick={handleDelete}>
+                {confirmDelete ? 'Tap again to delete' : 'Delete app'}
+              </button>
+            </div>
+          )}
         </form>
       </section>
     </div>

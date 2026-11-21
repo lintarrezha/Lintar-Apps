@@ -69,3 +69,12 @@ export function ClearIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function EditIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" {...base} {...props}>
+      <path d="M4.5 19.5 5.3 15 15.8 4.5a2.1 2.1 0 0 1 3 0l.7.7a2.1 2.1 0 0 1 0 3L9 18.7l-4.5.8Z" />
+      <path d="m14 6.5 3.5 3.5" />
+    </svg>
+  );
+}

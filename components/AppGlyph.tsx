@@ -149,6 +149,35 @@ const icons: Record<AppIconName, ReactNode> = {
       <rect className="st c-soft" x="28" y="23.5" width="22" height="13" rx="6.5" />
     </g>
   ),
+  drive: (
+    <>
+      <path d="M21.5 45a9.5 9.5 0 0 1-1.2-18.9 12 12 0 0 1 22.8-2.4A10.7 10.7 0 0 1 40.5 45Z" />
+      <path className="ink" d="M24.5 33a1.8 1.8 0 0 1 1.8-1.8h2.8l1.7 2h3.5a1.8 1.8 0 0 1 1.8 1.8v5.2a1.8 1.8 0 0 1-1.8 1.8h-9.8a1.8 1.8 0 0 1-1.8-1.8Z" />
+    </>
+  ),
+  sheet: (
+    <>
+      <rect x="14" y="12" width="32" height="36" rx="5" />
+      <path className="soft" d="M14 17a5 5 0 0 1 5-5h22a5 5 0 0 1 5 5v6H14Z" />
+      <path className="st thin c-ink" d="M14 31h32M14 39h32M28 23v25" />
+    </>
+  ),
+  mail: (
+    <>
+      <rect x="11" y="16" width="38" height="28" rx="6" />
+      <path className="st mid c-ink" d="m15 22.5 15 11.5 15-11.5" />
+    </>
+  ),
+  photo: (
+    <>
+      <rect x="12" y="14" width="36" height="32" rx="6" />
+      <circle className="ink" cx="23" cy="24" r="3.6" />
+      <path className="soft" d="M12 40 22 30l8 8 6-6 8 8h4a6 6 0 0 1-6 6H18a6 6 0 0 1-6-6Z" />
+    </>
+  ),
+  bookmark: (
+    <path d="M19 13h22a3 3 0 0 1 3 3v31l-14-9-14 9V16a3 3 0 0 1 3-3Z" />
+  ),
   terminal: (
     <>
       <rect className="shade" x="11" y="14" width="38" height="32" rx="7" />

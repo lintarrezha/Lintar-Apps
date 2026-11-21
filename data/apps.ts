@@ -1,6 +1,10 @@
-export type AppCategory = 'Productivity' | 'Data' | 'Web' | 'Tools';
+export type AppCategory = 'Productivity' | 'Data' | 'Web' | 'Tools' | 'Drive';
 
-export type AppIconName = 'dashboard' | 'document' | 'receipt' | 'chart' | 'bag' | 'camera' | 'cake' | 'drop' | 'server' | 'globe' | 'code' | 'database' | 'calendar' | 'folder' | 'link' | 'terminal' | 'home' | 'lock' | 'qr' | 'chat';
+export type AppIconName = 'dashboard' | 'document' | 'receipt' | 'chart' | 'bag' | 'camera' | 'cake' | 'drop' | 'server' | 'globe' | 'code' | 'database' | 'calendar' | 'folder' | 'link' | 'terminal' | 'home' | 'lock' | 'qr' | 'chat' | 'drive' | 'sheet' | 'mail' | 'photo' | 'bookmark';
+
+export const appCategories: AppCategory[] = ['Productivity', 'Data', 'Web', 'Tools', 'Drive'];
+
+export const appIconNames: AppIconName[] = ['dashboard', 'document', 'receipt', 'chart', 'bag', 'camera', 'cake', 'drop', 'server', 'globe', 'code', 'database', 'calendar', 'folder', 'link', 'terminal', 'home', 'lock', 'qr', 'chat', 'drive', 'sheet', 'mail', 'photo', 'bookmark'];
 
 export type AppItem = {
   id: string;
@@ -9,6 +13,8 @@ export type AppItem = {
   description: string;
   url: string;
   platform: string;
+  /** Opsional. Dipakai untuk mengelompokkan shortcut Drive per akun Google. */
+  account?: string;
   category: AppCategory;
   icon: AppIconName;
   accent: string;
