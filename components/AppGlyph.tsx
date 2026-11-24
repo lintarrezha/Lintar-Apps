@@ -1,5 +1,5 @@
 import type { ReactNode, SVGProps } from 'react';
-import type { AppIconName } from '@/data/apps';
+import type { AppIconName } from '@/data/types';
 
 type Props = SVGProps<SVGSVGElement> & {
   name: AppIconName;

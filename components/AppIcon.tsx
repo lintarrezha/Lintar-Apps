@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import AppGlyph from '@/components/AppGlyph';
-import type { AppIconName } from '@/data/apps';
+import type { AppIconName } from '@/data/types';
 
 type Props = {
   icon: AppIconName;

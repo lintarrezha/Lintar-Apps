@@ -2,8 +2,8 @@
 
 import type { MouseEvent } from 'react';
 import AppIcon from '@/components/AppIcon';
-import { ChevronIcon, EditIcon, StarIcon } from '@/components/Icons';
-import type { AppItem } from '@/data/apps';
+import { ChevronIcon, EditIcon, LockIcon, StarIcon } from '@/components/Icons';
+import type { AppItem } from '@/data/types';
 
 type Props = {
   app: AppItem;
@@ -57,7 +57,10 @@ export default function AppTile({ app, variant, isFavorite, isCustom = false, gr
       <a className="app-row-link" {...linkProps(app, onOpen)}>
         <AppIcon icon={app.icon} accent={app.accent} iconUrl={app.iconUrl} />
         <span className="app-row-text">
-          <span className="app-row-name">{app.name}</span>
+          <span className="app-row-name">
+            {app.name}
+            {app.visibility === 'private' && <LockIcon className="name-lock" aria-label="Private" />}
+          </span>
           {note && <span className="app-row-desc">{note}</span>}
         </span>
         <span className="app-row-platform">{platformLabel}</span>

@@ -1,28 +1,40 @@
-export type AppCategory = 'Productivity' | 'Data' | 'Web' | 'Tools' | 'Drive';
+import type { AppItem } from './types';
 
-export type AppIconName = 'dashboard' | 'document' | 'receipt' | 'chart' | 'bag' | 'camera' | 'cake' | 'drop' | 'server' | 'globe' | 'code' | 'database' | 'calendar' | 'folder' | 'link' | 'terminal' | 'home' | 'lock' | 'qr' | 'chat' | 'drive' | 'sheet' | 'mail' | 'photo' | 'bookmark';
-
-export const appCategories: AppCategory[] = ['Productivity', 'Data', 'Web', 'Tools', 'Drive'];
-
-export const appIconNames: AppIconName[] = ['dashboard', 'document', 'receipt', 'chart', 'bag', 'camera', 'cake', 'drop', 'server', 'globe', 'code', 'database', 'calendar', 'folder', 'link', 'terminal', 'home', 'lock', 'qr', 'chat', 'drive', 'sheet', 'mail', 'photo', 'bookmark'];
-
-export type AppItem = {
-  id: string;
-  name: string;
-  shortName: string;
-  description: string;
-  url: string;
-  platform: string;
-  /** Opsional. Dipakai untuk mengelompokkan shortcut Drive per akun Google. */
-  account?: string;
-  category: AppCategory;
-  icon: AppIconName;
-  accent: string;
-  iconUrl?: string;
-  favorite?: boolean;
-};
+/*
+ * DAFTAR APLIKASI. File ini hanya dibaca server (app/page.tsx).
+ * Jangan di-import dari komponen client: aplikasi dengan visibility: 'private' hanya boleh
+ * sampai ke browser lewat server, setelah pemilik sign-in.
+ *
+ * Contoh shortcut Drive pribadi yang ikut tersinkron di semua perangkat:
+ *
+ *   {
+ *     id: 'drive-kerja-data',
+ *     name: 'Data Mentah',
+ *     shortName: 'Data Mentah',
+ *     description: 'Dataset untuk analisis',
+ *     url: 'https://drive.google.com/drive/folders/ID_FOLDER?authuser=kerja@gmail.com',
+ *     platform: 'Google Drive',
+ *     account: 'kerja@gmail.com',
+ *     category: 'Drive',
+ *     icon: 'drive',
+ *     accent: '#007AFF',
+ *     visibility: 'private',
+ *   },
+ */
 
 export const apps: AppItem[] = [
+  {
+    id: 'job-tracker',
+    name: 'Job Tracker',
+    shortName: 'Job Tracker',
+    description: 'Pelacakan dan pengelolaan hasil lamar pekerjaan.',
+    url: 'https://script.google.com/macros/s/AKfycbxRu5DG8lnBwtYauFfbOahfPLKCo9Gz5nrtL64VeapOgyGa1aeN0rp-rYt4fxCDqcV6/exec',
+    platform: 'Apps Script',
+    category: 'Productivity',
+    icon: 'chart',
+    accent: '#34B500',
+    favorite: true,
+  },
   {
     id: 'invoice-system',
     name: 'Invoice System',
@@ -69,6 +81,7 @@ export const apps: AppItem[] = [
     category: 'Web',
     icon: 'lock',
     accent: '#48484A',
+    visibility: 'private',
     favorite: false,
   },
   {

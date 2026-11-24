@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import AppIcon from '@/components/AppIcon';
-import { appCategories, type AppCategory, type AppIconName, type AppItem } from '@/data/apps';
+import { appCategories, type AppCategory, type AppIconName, type AppItem } from '@/data/types';
 
 type Props = {
   open: boolean;
